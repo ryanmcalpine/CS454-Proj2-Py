@@ -43,6 +43,7 @@ def count( dfa, n ):  # n is the length of the string
 
     return current['{S}']
 
+
 if __name__ == '__main__':
     # First, create NFA for weakly divisible by 7:
     nfa = NFA(
@@ -93,4 +94,4 @@ if __name__ == '__main__':
 
     while True:
         k = int(input("Enter an integer between 1 and 200: "))
-        print( "There are " + str(count(dfa, k)) + " valid strings of length " + str(k) )
+        print("There are " + str(count(dfa, k)) + " valid strings of length " + str(k) + "\n")
