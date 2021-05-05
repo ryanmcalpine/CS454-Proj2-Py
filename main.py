@@ -7,29 +7,41 @@ from automata.fa.nfa import NFA
 from automata.fa.dfa import DFA
 
 
-def count( dfa, n ):    # n is the length of the string
+def count( dfa, n ):  # n is the length of the string
     if n < 1 or n > 200:
         print("Invalid input")
         return 0
 
-    current = [0] * len(dfa.states)
-    previous = [0] * len(dfa.states)
+    # current = [0] * len(dfa.states) - Replace w/ dictionary
+    # previous = [0] * len(dfa.states) - Replace w/ dictionary
+    current = {}
+    previous = {}
 
     # For every state,
-    for i in range(len(dfa.states)):
+    for i in dfa.states:
         # if it is a final state,
-        if dfa.states[i] in dfa.final_states:
+        if i in dfa.final_states:
             # change index in previous[] from 0 to 1 to mark it as accepting
-            previous[i] = 1
+            # previous{0, 0, 0, 0, 0, 1, 1, 1, 0}
+            previous[i] = 1  # replaces previous for accepting state
+        else:
+            previous[i] = 0
 
+        current[i] = 0
+
+    # For the input string length
     for i in range(n):
-        for j in range(len(dfa.states)):
+        # For every state in the DFA
+        for j in dfa.states:
             sum = 0
-            for k in range(10):
-                sum += previous[dfa]
-            current[j] = previous
+            # For every input 0-9
+            for k in dfa.transitions[j].values():
+                sum += previous[k]
+            current[j] = sum
+        for k in dfa.states:
+            previous[k] = current[k]
 
-
+    return current['{S}']
 
 if __name__ == '__main__':
     # First, create NFA for weakly divisible by 7:
@@ -77,8 +89,8 @@ if __name__ == '__main__':
 
     # Next, convert the NFA into a DFA
     dfa = DFA.from_nfa(nfa)
+    dfa.states = sorted(dfa.states)
 
-
-    print(dfa.final_states)
     while True:
         k = int(input("Enter an integer between 1 and 200: "))
+        print( "There are " + str(count(dfa, k)) + " valid strings of length " + str(k) )
